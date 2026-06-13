@@ -75,11 +75,11 @@ public class LangManager {
     }
 
     /**
-     * Gets a localized message for a player.
+     * Gets a localized message for a player (or console).
      * Resolves placeholders like {player}, {time}, etc.
      */
     public String get(Player player, String key) {
-        String locale = getPlayerLocale(player);
+        String locale = player != null ? getPlayerLocale(player) : configManager.getDefaultLocale();
         return getRaw(locale, key);
     }
 

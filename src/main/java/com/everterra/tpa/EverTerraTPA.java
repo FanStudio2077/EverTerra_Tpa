@@ -8,6 +8,7 @@ import com.everterra.tpa.economy.EconomyManager;
 import com.everterra.tpa.gui.GeyserDetector;
 import com.everterra.tpa.gui.TpaGuiManager;
 import com.everterra.tpa.i18n.LangManager;
+import com.everterra.tpa.listener.PlayerListener;
 import com.everterra.tpa.teleport.TeleportScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,11 +71,11 @@ public final class EverTerraTPA extends JavaPlugin {
         GeyserDetector.init();
         this.guiManager = new TpaGuiManager(this);
 
-        // 4. Register commands
+        // 6. Register commands
         registerCommands();
 
-        // 5. Register listeners (Phase 7)
-        // registerListeners();
+        // 7. Register listeners
+        registerListeners();
 
         // 6. Start cleanup task
         startCleanupTask();
@@ -107,8 +108,19 @@ public final class EverTerraTPA extends JavaPlugin {
                 .setExecutor(new TpadenyCommand(this, requestManager));
         Objects.requireNonNull(getCommand("tpacancel"))
                 .setExecutor(new TpacancelCommand(this, requestManager));
+        Objects.requireNonNull(getCommand("lang"))
+                .setExecutor(new LangCommand(this));
+        Objects.requireNonNull(getCommand("tpareload"))
+                .setExecutor(new TpareloadCommand(this));
+        Objects.requireNonNull(getCommand("tpabypass"))
+                .setExecutor(new TpabypassCommand(this));
 
         getLogger().info("Commands registered successfully.");
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
+        getLogger().info("Event listeners registered successfully.");
     }
 
     // ==================== Cleanup Task ====================
