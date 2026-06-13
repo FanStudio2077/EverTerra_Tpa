@@ -1,0 +1,86 @@
+# EverTerra-TPA English Language File
+
+prefix: "&8[&bTPA&8] &r"
+
+tpa:
+  sent: "&aTeleport request sent to &e{player}"
+  sent_here: "&aTeleport-here request sent to &e{player}"
+  received: "&e{player} &awants to teleport to you"
+  received_here: "&e{player} &ainvites you to teleport to them"
+  accepted: "&aRequest accepted!"
+  accepted_sender: "&e{player} &aaccepted your teleport request"
+  denied: "&cRequest denied"
+  denied_sender: "&e{player} &cdenied your teleport request"
+  cancelled: "&cYou cancelled the teleport request"
+  cancelled_sender: "&e{player} &ccancelled the teleport request"
+  expired: "&eTeleport request expired"
+  teleporting: "&aTeleporting... &7{time}s"
+  teleported: "&aTeleported!"
+  teleport_cancelled: "&cTeleport cancelled"
+  no_request: "&cYou have no pending teleport requests"
+  self_tpa: "&cYou cannot send a TPA request to yourself"
+
+# Chat messages for tpaccept
+accept_sender: "&e{target} &aaccepted &e{player}'s &ateleport request"
+
+error:
+  player_not_found: "&cPlayer not found or offline"
+  cooldown: "&cCooldown active. Please wait &e{time} &cseconds"
+  no_money: "&cNot enough money! Need &e{cost} &cbut you have &e{balance}"
+  cost: "&7Teleport cost: &e{cost} &7coins"
+  no_permission: "&cYou do not have permission"
+  already_has_request: "&cYou already have a pending teleport request"
+  target_has_request: "&cThat player already has a pending teleport request"
+  cancelled_move: "&cTeleport cancelled — you moved"
+  cancelled_damage: "&cTeleport cancelled — you took damage"
+  cancelled_death: "&cTeleport cancelled — player died"
+  cancelled_quit: "&cTeleport cancelled — player went offline"
+  cancelled_world: "&cTeleport cancelled — world changed"
+  rate_limit: "&cToo many requests. Please wait a moment"
+
+# --- GUI: Java Inventory ---
+gui:
+  accept_title: "&8Teleport Request"
+  accept_item: "&a✔ Accept"
+  accept_lore:
+    - "&7Click to accept"
+  deny_item: "&c✖ Deny"
+  deny_lore:
+    - "&7Click to deny"
+  info_item: "&e⏳ Time Remaining"
+  info_lore:
+    - "&7From: &f{sender}"
+    - "&7Type: &f{type}"
+    - "&7Expires: &f{time}s"
+  time_format: "&eTime left: &f{time}s"
+
+# --- GUI: Bedrock Form (Receive) ---
+bedrock:
+  receive_title: "Teleport Request"
+  receive_content: "§e{player} §f{type_text}"
+  accept_button: "§a✔ Accept"
+  deny_button: "§c✖ Deny"
+
+# --- GUI: Bedrock Form (Send - mobile friendly) ---
+bedrock_send:
+  title: "§bTPA Teleport System"
+  select_player: "§eSelect a player to teleport to:"
+  select_type_title: "§bChoose Teleport Type"
+  select_type_content: "§eTarget: §f{player}"
+  tpa_button: "§a📤 Teleport to them"
+  tpac_button: "§6📥 Invite them here"
+  no_players: "§cNo other players online"
+  type_tpa: "wants to teleport to you"
+  type_tpac: "invites you to teleport to them"
+
+# --- Admin ---
+admin:
+  reloaded: "&aConfiguration reloaded"
+  bypass_on: "&e{player} &a bypass mode enabled"
+  bypass_off: "&e{player} &c bypass mode disabled"
+
+# --- Lang Command ---
+lang:
+  changed: "&aLanguage changed to: &e{locale}"
+  invalid: "&cInvalid locale. Available: &e{locales}"
+  current: "&7Current language: &e{locale}"

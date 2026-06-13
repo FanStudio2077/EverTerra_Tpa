@@ -1,0 +1,86 @@
+# EverTerra-TPA 简体中文语言文件
+
+prefix: "&8[&bTPA&8] &r"
+
+tpa:
+  sent: "&a已向 &e{player} &a发送传送请求"
+  sent_here: "&a已向 &e{player} &a发送邀请传送请求"
+  received: "&e{player} &a请求传送到你这里"
+  received_here: "&e{player} &a邀请你传送到他那里"
+  accepted: "&a请求已接受！"
+  accepted_sender: "&e{player} &a已接受你的传送请求"
+  denied: "&c请求已拒绝"
+  denied_sender: "&e{player} &c拒绝了你的传送请求"
+  cancelled: "&c你已取消传送请求"
+  cancelled_sender: "&e{player} &c取消了传送请求"
+  expired: "&e传送请求已过期"
+  teleporting: "&a传送中... &7{time}秒后到达"
+  teleported: "&a传送完成！"
+  teleport_cancelled: "&c传送已取消"
+  no_request: "&c你没有待处理的传送请求"
+  self_tpa: "&c你不能向自己发送传送请求"
+
+# Chat messages for tpaccept
+accept_sender: "&e{target} &a已接受 &e{player} &a的传送请求"
+
+error:
+  player_not_found: "&c玩家不存在或不在线"
+  cooldown: "&c冷却中，请等待 &e{time} &c秒后再试"
+  no_money: "&c余额不足！需要 &e{cost} &c金币，你只有 &e{balance}"
+  cost: "&7本次传送费用: &e{cost} &7金币"
+  no_permission: "&c你没有权限使用此命令"
+  already_has_request: "&c你已有一个待处理的传送请求"
+  target_has_request: "&c该玩家已有待处理的传送请求"
+  cancelled_move: "&c传送取消 —— 你移动了"
+  cancelled_damage: "&c传送取消 —— 你受到了伤害"
+  cancelled_death: "&c传送取消 —— 玩家死亡"
+  cancelled_quit: "&c传送取消 —— 玩家离线"
+  cancelled_world: "&c传送取消 —— 世界切换"
+  rate_limit: "&c请求过于频繁，请稍后再试"
+
+# --- GUI: Java Inventory ---
+gui:
+  accept_title: "&8传送请求"
+  accept_item: "&a✔ 接受"
+  accept_lore:
+    - "&7点击接受传送请求"
+  deny_item: "&c✖ 拒绝"
+  deny_lore:
+    - "&7点击拒绝传送请求"
+  info_item: "&e⏳ 剩余时间"
+  info_lore:
+    - "&7来自: &f{sender}"
+    - "&7类型: &f{type}"
+    - "&7剩余: &f{time}秒"
+  time_format: "&e剩余时间: &f{time}秒"
+
+# --- GUI: Bedrock Form (接收) ---
+bedrock:
+  receive_title: "传送请求"
+  receive_content: "§e{player} §f{type_text}"
+  accept_button: "§a✔ 接受"
+  deny_button: "§c✖ 拒绝"
+
+# --- GUI: Bedrock Form (发送 - 手机版友好) ---
+bedrock_send:
+  title: "§bTPA 传送系统"
+  select_player: "§e选择你要传送的玩家:"
+  select_type_title: "§b选择传送类型"
+  select_type_content: "§e目标玩家: §f{player}"
+  tpa_button: "§a📤 传送到对方"
+  tpac_button: "§6📥 邀请对方过来"
+  no_players: "§c没有其他在线玩家"
+  type_tpa: "传送到你这里"
+  type_tpac: "邀请你过去"
+
+# --- Admin ---
+admin:
+  reloaded: "&a配置已重新加载"
+  bypass_on: "&e{player} &a已启用绕过模式"
+  bypass_off: "&e{player} &c已关闭绕过模式"
+
+# --- Lang Command ---
+lang:
+  changed: "&a语言已切换为: &e{locale}"
+  invalid: "&c无效的语言代码，可用: &e{locales}"
+  current: "&7当前语言: &e{locale}"

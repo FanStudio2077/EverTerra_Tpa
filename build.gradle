@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.5'
+}
+
+group = 'com.everterra'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://repo.opencollab.dev/main/' }
+}
+
+dependencies {
+    // Paper API (compileOnly — provided by server)
+    compileOnly 'io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT'
+
+    // Vault API
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7.1'
+
+    // Floodgate (for Bedrock detection)
+    compileOnly 'org.geysermc.floodgate:api:2.2.3-SNAPSHOT'
+
+    // PlaceholderAPI (optional extension)
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    minimize()
+}
+
+build {
+    dependsOn shadowJar
+}
+
+processResources {
+    def props = [
+        version    : version,
+        name       : 'EverTerra-TPA',
+        apiVersion : '1.20'
+    ]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}

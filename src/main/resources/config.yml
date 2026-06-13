@@ -1,0 +1,38 @@
+# ============================================
+# EverTerra-TPA  Main Configuration
+# ============================================
+
+# --- Teleport Settings ---
+teleport:
+  delay: 5                    # Countdown seconds before teleport
+  cancel_on_move: true        # Cancel if player moves
+  cancel_on_damage: true      # Cancel if player takes damage
+  cancel_on_world_change: false # Cancel if player changes world
+
+# --- Economy Settings (requires Vault) ---
+economy:
+  enabled: true
+  tpa_cost: 50.0              # Cost for /tpa
+  tpac_cost: 80.0             # Cost for /tpac (teleport here)
+
+# --- Cooldown Settings (seconds) ---
+cooldown:
+  tpa: 60                     # Cooldown after sending /tpa
+  tpac: 120                   # Cooldown after sending /tpac
+
+# --- Request Settings ---
+request:
+  expire_time: 30             # Seconds before request auto-expires
+  max_per_minute: 3           # Max requests per minute (anti-spam)
+  overwrite_old: true         # Auto-overwrite old outgoing request
+  block_self_tpa: true        # Block sending TPA to yourself
+
+# --- I18N Settings ---
+i18n:
+  default: zh_CN              # Default server language
+  fallback: en_US             # Fallback language
+  player_language: true       # Allow players to set their own language
+
+# --- Cleanup Settings ---
+cleanup:
+  interval: 20                # Seconds between expired request cleanup runs

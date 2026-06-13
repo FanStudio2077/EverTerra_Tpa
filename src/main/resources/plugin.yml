@@ -1,0 +1,57 @@
+name: EverTerra-TPA
+version: '${version}'
+main: com.everterra.tpa.EverTerraTPA
+api-version: '${apiVersion}'
+description: Cross-platform TPA system with GUI, Economy, and I18N support
+author: EverTerra
+website: https://github.com/EverTerra/EverTerra-TPA
+
+depend: []
+softdepend: [Vault, Geyser-Spigot, Floodgate, PlaceholderAPI]
+
+commands:
+  tpa:
+    description: Send a teleport request to a player
+    usage: /<command> <player>
+    aliases: []
+  tpac:
+    description: Send a teleport-here request to a player
+    usage: /<command> <player>
+    aliases: []
+  tpaccept:
+    description: Accept a pending teleport request
+    usage: /<command>
+    aliases: [tpyes]
+  tpadeny:
+    description: Deny a pending teleport request
+    usage: /<command>
+    aliases: [tpno]
+  tpacancel:
+    description: Cancel your outgoing teleport request
+    usage: /<command>
+    aliases: []
+  lang:
+    description: Change your language preference
+    usage: /<command> <locale>
+    aliases: [language]
+  tpareload:
+    description: Reload plugin configuration
+    usage: /<command>
+    permission: tpa.reload
+    aliases: []
+  tpabypass:
+    description: Bypass cooldown/cost for a player
+    usage: /<command> <player>
+    permission: tpa.bypass
+    aliases: []
+
+permissions:
+  tpa.use:
+    description: Allows using TPA commands
+    default: true
+  tpa.bypass:
+    description: Bypass cooldown and cost restrictions
+    default: op
+  tpa.reload:
+    description: Allows reloading plugin configuration
+    default: op
