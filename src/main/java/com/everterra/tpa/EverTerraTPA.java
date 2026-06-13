@@ -4,6 +4,7 @@ import com.everterra.tpa.command.*;
 import com.everterra.tpa.config.ConfigManager;
 import com.everterra.tpa.core.CooldownManager;
 import com.everterra.tpa.core.RequestManager;
+import com.everterra.tpa.economy.EconomyManager;
 import com.everterra.tpa.i18n.LangManager;
 import com.everterra.tpa.teleport.TeleportScheduler;
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ public final class EverTerraTPA extends JavaPlugin {
     private RequestManager requestManager;
     private CooldownManager cooldownManager;
     private TeleportScheduler teleportScheduler;
+    private EconomyManager economyManager;
 
     // --- Subsystems ---
     // Registered in later phases:
@@ -54,6 +56,11 @@ public final class EverTerraTPA extends JavaPlugin {
         this.requestManager = new RequestManager(this);
         this.cooldownManager = new CooldownManager(configManager);
         this.teleportScheduler = new TeleportScheduler(this);
+
+        // 4. Setup economy
+        getLogger().info("Setting up economy...");
+        this.economyManager = new EconomyManager(configManager, getLogger());
+        economyManager.setup();
 
         // 4. Register commands
         registerCommands();
@@ -136,5 +143,9 @@ public final class EverTerraTPA extends JavaPlugin {
 
     public TeleportScheduler getTeleportScheduler() {
         return teleportScheduler;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
     }
 }
