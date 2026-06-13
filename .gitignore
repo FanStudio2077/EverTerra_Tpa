@@ -1,27 +1,67 @@
-# Gradle
+# ============================================
+# .gitignore — EverTerra-TPA
+# ============================================
+
+# --- Gradle ---
 .gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+*.gradle.kts.bak
 
-# IDE
+# --- IDE — IntelliJ IDEA ---
 .idea/
 *.iml
-.vscode/
-.project
+*.ipr
+*.iws
+out/
+
+# --- IDE — Eclipse ---
 .classpath
+.project
 .settings/
+bin/
 
-# OS
+# --- IDE — VS Code ---
+.vscode/
+*.code-workspace
+
+# --- OS ---
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
-# Java
-*.log
-*.tmp
+# --- Java ---
 *.class
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
 
-# Test Server
+# --- Logs ---
+*.log
+logs/
+
+# --- PaperMC Test Server ---
 test-server/
 run/
+cache/
+world/
+world_nether/
+world_the_end/
+plugins/EverTerra-TPA/
+*.lock
+
+# --- Temporary ---
+*.tmp
+*.bak
+*.swp
+*~.nib

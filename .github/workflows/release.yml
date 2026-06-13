@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Determine Asset Name
+        id: asset
+        run: |
+          VERSION="${{ github.ref_name }}"
+          echo "filename=EverTerra-TPA-${VERSION}.jar" >> $GITHUB_OUTPUT
+          echo "path=build/libs/EverTerra-TPA-${VERSION#v}.jar" >> $GITHUB_OUTPUT
+
+      - name: Rename JAR (if needed)
+        run: |
+          STRIPPED_VERSION="${{ github.ref_name }}"
+          STRIPPED_VERSION="${STRIPPED_VERSION#v}"
+          if [ -f "build/libs/EverTerra-TPA-${STRIPPED_VERSION}.jar" ]; then
+            cp "build/libs/EverTerra-TPA-${STRIPPED_VERSION}.jar" "build/libs/${{ steps.asset.outputs.filename }}"
+            echo "Renamed JAR to ${{ steps.asset.outputs.filename }}"
+          else
+            # Fallback: find any jar
+            JARFILE=$(ls build/libs/EverTerra-TPA-*.jar 2>/dev/null | head -1)
+            if [ -n "$JARFILE" ]; then
+              cp "$JARFILE" "build/libs/${{ steps.asset.outputs.filename }}"
+              echo "Using $JARFILE as ${{ steps.asset.outputs.filename }}"
+            else
+              echo "::error::No JAR file found in build/libs/"
+              exit 1
+            fi
+          fi
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          body: |
+            ## 🚀 EverTerra-TPA ${{ github.ref_name }}
+
+            ### 📥 Installation
+            1. Download `EverTerra-TPA-${{ github.ref_name }}.jar`
+            2. Place it in your server's `plugins/` folder
+            3. Restart or run `/tpareload`
+
+            ### 🔗 Dependencies
+            - Paper 1.20+
+            - Java 21+
+            - Vault (optional, for economy)
+            - GeyserMC + Floodgate (optional, for Bedrock GUI)
+
+            ---
+            *Automated release via GitHub Actions*
+          draft: false
+          prerelease: false
+          files: build/libs/${{ steps.asset.outputs.filename }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifact (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EverTerra-TPA-${{ github.ref_name }}
+          path: build/libs/${{ steps.asset.outputs.filename }}
+          retention-days: 30
