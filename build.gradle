@@ -7,7 +7,7 @@ plugins {
 // Project Metadata
 // ============================================
 group = 'com.everterra'
-version = '1.7.0'
+version = '1.0.0'
 description = 'Cross-platform TPA system for PaperMC with GUI, Economy & I18N'
 
 // ============================================
