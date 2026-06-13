@@ -12,7 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
@@ -103,12 +103,24 @@ public class PlayerListener implements Listener {
 
     /**
      * Cancel teleport on damage (configurable).
-     * Note: move-based cancellation is handled inside TeleportScheduler.
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDamage(org.bukkit.event.entity.EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             teleportScheduler.cancelOnDamage(player);
+        }
+    }
+
+    /**
+     * Cancel teleport on world change (configurable).
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldChange(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        if (teleportScheduler.isTeleporting(player.getUniqueId())
+                && plugin.getConfigManager().isCancelOnWorldChange()) {
+            teleportScheduler.cancelTeleport(player);
+            player.sendMessage(lang.format(player, "error.cancelled_world"));
         }
     }
 }
