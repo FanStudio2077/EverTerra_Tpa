@@ -161,13 +161,13 @@ Players can switch language with `/lang zh_CN` or `/lang en_US`.
 
 ## 📸 Screenshots
 
-> *Screenshots placeholder — add your own images here*
+### Java Edition — Receive GUI
+![Java Receive GUI](img/java-receive-gui.png)
 
-<!--
-![Java GUI](docs/screenshots/java-gui.png)
-![Bedrock Form](docs/screenshots/bedrock-form.png)
-![Bedrock Send](docs/screenshots/bedrock-send.png)
--->
+### Bedrock Edition — Send GUI (Mobile Friendly)
+| Step 1: Choose Player | Step 2: Choose Type |
+|------|------|
+| ![Bedrock Player Select](img/bedrock-send-player-select.jpg) | ![Bedrock Type Select](img/bedrock-send-type-select.jpg) |
 
 ---
 

@@ -161,13 +161,13 @@ i18n:
 
 ## 📸 截图
 
-> *在此处添加你的截图*
+### Java 版 — 接收传送 GUI
+![Java 接收 GUI](img/java-receive-gui.png)
 
-<!--
-![Java GUI](docs/screenshots/java-gui.png)
-![基岩版表单](docs/screenshots/bedrock-form.png)
-![基岩版发送](docs/screenshots/bedrock-send.png)
--->
+### 基岩版 — 发送传送 GUI（手机版友好）
+| 第一步：选择玩家 | 第二步：选择类型 |
+|------|------|
+| ![基岩版选玩家](img/bedrock-send-player-select.jpg) | ![基岩版选类型](img/bedrock-send-type-select.jpg) |
 
 ---
 
