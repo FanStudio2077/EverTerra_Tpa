@@ -1,9 +1,14 @@
 name: Release
 
+# ============================================
+# Trigger: push semver tags like v1.0.0
+# GitHub Actions uses GLOB patterns, NOT regex!
+# [0-9]* matches one or more digits in glob
+# ============================================
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]*.[0-9]*.[0-9]*'
 
 permissions:
   contents: write
@@ -31,30 +36,44 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
-      - name: Determine Asset Name
+      # Debug: show what was actually built
+      - name: Debug — List build output
+        run: |
+          echo "=== build/libs contents ==="
+          ls -lah build/libs/
+          echo ""
+          echo "=== JAR files found ==="
+          find build/libs -name "*.jar" -type f
+
+      # ============================================
+      # ShadowJar produces: EverTerra-TPA-{version}.jar
+      # e.g. EverTerra-TPA-1.0.0.jar (no 'v' prefix)
+      # We copy it to: EverTerra-TPA-v1.0.0.jar (with 'v')
+      # ============================================
+      - name: Prepare Release Asset
         id: asset
         run: |
-          VERSION="${{ github.ref_name }}"
-          echo "filename=EverTerra-TPA-${VERSION}.jar" >> $GITHUB_OUTPUT
-          echo "path=build/libs/EverTerra-TPA-${VERSION#v}.jar" >> $GITHUB_OUTPUT
+          TAG="${{ github.ref_name }}"                          # e.g. v1.0.0
+          VERSION_NO_V="${TAG#v}"                               # e.g. 1.0.0
+          SOURCE_JAR="build/libs/EverTerra-TPA-${VERSION_NO_V}.jar"
+          RELEASE_JAR="EverTerra-TPA-${TAG}.jar"                # e.g. EverTerra-TPA-v1.0.0.jar
 
-      - name: Rename JAR (if needed)
-        run: |
-          STRIPPED_VERSION="${{ github.ref_name }}"
-          STRIPPED_VERSION="${STRIPPED_VERSION#v}"
-          if [ -f "build/libs/EverTerra-TPA-${STRIPPED_VERSION}.jar" ]; then
-            cp "build/libs/EverTerra-TPA-${STRIPPED_VERSION}.jar" "build/libs/${{ steps.asset.outputs.filename }}"
-            echo "Renamed JAR to ${{ steps.asset.outputs.filename }}"
+          echo "TAG=${TAG}"
+          echo "VERSION_NO_V=${VERSION_NO_V}"
+          echo "SOURCE_JAR=${SOURCE_JAR}"
+          echo "RELEASE_JAR=${RELEASE_JAR}"
+
+          if [ -f "${SOURCE_JAR}" ]; then
+            cp "${SOURCE_JAR}" "build/libs/${RELEASE_JAR}"
+            echo "✅ Copied ${SOURCE_JAR} → build/libs/${RELEASE_JAR}"
           else
-            JARFILE=$(ls build/libs/EverTerra-TPA-*.jar 2>/dev/null | head -1)
-            if [ -n "$JARFILE" ]; then
-              cp "$JARFILE" "build/libs/${{ steps.asset.outputs.filename }}"
-              echo "Using $JARFILE as ${{ steps.asset.outputs.filename }}"
-            else
-              echo "::error::No JAR file found in build/libs/"
-              exit 1
-            fi
+            echo "::error::JAR not found: ${SOURCE_JAR}"
+            echo "Available files:"
+            ls -lah build/libs/
+            exit 1
           fi
+
+          echo "release_jar=${RELEASE_JAR}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -70,14 +89,14 @@ jobs:
             ### 🇨🇳 中文说明 {#chinese}
 
             ### 📥 安装方法
-            1. 下载 `EverTerra-TPA-${{ github.ref_name }}.jar`
+            1. 下载 `${{ steps.asset.outputs.release_jar }}`
             2. 放入服务器 `plugins/` 文件夹
             3. 重启服务器或执行 `/tpareload`
 
             ### 🔗 依赖
             - Paper 1.20+
             - Java 21+
-            - Vault（可选，用于经济）
+            - Vault（可选，用于经济系统）
             - GeyserMC + Floodgate（可选，用于基岩版 GUI）
 
             ### 📖 完整文档
@@ -88,7 +107,7 @@ jobs:
             ### 🇬🇧 English {#english}
 
             ### 📥 Installation
-            1. Download `EverTerra-TPA-${{ github.ref_name }}.jar`
+            1. Download `${{ steps.asset.outputs.release_jar }}`
             2. Place it in your server's `plugins/` folder
             3. Restart or run `/tpareload`
 
@@ -102,10 +121,10 @@ jobs:
             [English README](https://github.com/FanStudio2077/EverTerra_Tpa/blob/master/README.md)
 
             ---
-            *Automated release via GitHub Actions · 由 GitHub Actions 自动发布*
+            *🤖 Automated release via GitHub Actions · 由 GitHub Actions 自动发布*
           draft: false
           prerelease: false
-          files: build/libs/${{ steps.asset.outputs.filename }}
+          files: build/libs/${{ steps.asset.outputs.release_jar }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -113,5 +132,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: EverTerra-TPA-${{ github.ref_name }}
-          path: build/libs/${{ steps.asset.outputs.filename }}
+          path: build/libs/${{ steps.asset.outputs.release_jar }}
           retention-days: 30
