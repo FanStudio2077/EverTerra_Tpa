@@ -46,7 +46,6 @@ jobs:
             cp "build/libs/EverTerra-TPA-${STRIPPED_VERSION}.jar" "build/libs/${{ steps.asset.outputs.filename }}"
             echo "Renamed JAR to ${{ steps.asset.outputs.filename }}"
           else
-            # Fallback: find any jar
             JARFILE=$(ls build/libs/EverTerra-TPA-*.jar 2>/dev/null | head -1)
             if [ -n "$JARFILE" ]; then
               cp "$JARFILE" "build/libs/${{ steps.asset.outputs.filename }}"
@@ -64,6 +63,30 @@ jobs:
           body: |
             ## 🚀 EverTerra-TPA ${{ github.ref_name }}
 
+            [📖 English below](#english) | [📖 中文说明见下方](#chinese)
+
+            ---
+
+            ### 🇨🇳 中文说明 {#chinese}
+
+            ### 📥 安装方法
+            1. 下载 `EverTerra-TPA-${{ github.ref_name }}.jar`
+            2. 放入服务器 `plugins/` 文件夹
+            3. 重启服务器或执行 `/tpareload`
+
+            ### 🔗 依赖
+            - Paper 1.20+
+            - Java 21+
+            - Vault（可选，用于经济）
+            - GeyserMC + Floodgate（可选，用于基岩版 GUI）
+
+            ### 📖 完整文档
+            [中文 README](https://github.com/FanStudio2077/EverTerra_Tpa/blob/master/README_zh.md)
+
+            ---
+
+            ### 🇬🇧 English {#english}
+
             ### 📥 Installation
             1. Download `EverTerra-TPA-${{ github.ref_name }}.jar`
             2. Place it in your server's `plugins/` folder
@@ -75,8 +98,11 @@ jobs:
             - Vault (optional, for economy)
             - GeyserMC + Floodgate (optional, for Bedrock GUI)
 
+            ### 📖 Full Documentation
+            [English README](https://github.com/FanStudio2077/EverTerra_Tpa/blob/master/README.md)
+
             ---
-            *Automated release via GitHub Actions*
+            *Automated release via GitHub Actions · 由 GitHub Actions 自动发布*
           draft: false
           prerelease: false
           files: build/libs/${{ steps.asset.outputs.filename }}

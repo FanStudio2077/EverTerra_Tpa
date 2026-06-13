@@ -2,11 +2,13 @@
 
 > Cross-platform TPA system for PaperMC — GUI, Economy & I18N
 
+[📖 中文版](README_zh.md) | [📖 English](README.md)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21%2B-orange)](https://adoptium.net/)
 [![Paper](https://img.shields.io/badge/Paper-1.20%2B-brightgreen)](https://papermc.io/)
-[![Build](https://github.com/EverTerra/EverTerra-TPA/actions/workflows/build.yml/badge.svg)](https://github.com/EverTerra/EverTerra-TPA/actions/workflows/build.yml)
-[![Release](https://img.shields.io/github/v/release/EverTerra/EverTerra-TPA?color=blue)](https://github.com/EverTerra/EverTerra-TPA/releases)
+[![Build](https://github.com/FanStudio2077/EverTerra_Tpa/actions/workflows/build.yml/badge.svg)](https://github.com/FanStudio2077/EverTerra_Tpa/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/FanStudio2077/EverTerra_Tpa?color=blue)](https://github.com/FanStudio2077/EverTerra_Tpa/releases)
 
 ---
 
@@ -42,7 +44,7 @@
 
 ## 🚀 Quick Start
 
-1. **Download** the latest `EverTerra-TPA.jar` from [Releases](https://github.com/EverTerra/EverTerra-TPA/releases)
+1. **Download** the latest `EverTerra-TPA.jar` from [Releases](https://github.com/FanStudio2077/EverTerra_Tpa/releases)
 2. **Place** the JAR in your server's `plugins/` folder
 3. **Start** the server (config auto-generates)
 4. **Edit** `plugins/EverTerra-TPA/config.yml` to your liking
@@ -50,10 +52,10 @@
 
 ```bash
 # Or build from source
-git clone https://github.com/EverTerra/EverTerra-TPA.git
-cd EverTerra-TPA
+git clone https://github.com/FanStudio2077/EverTerra_Tpa.git
+cd EverTerra_Tpa
 ./gradlew build
-# Output: build/libs/EverTerra-TPA-1.7.0.jar
+# Output: build/libs/EverTerra-TPA-*.jar
 ```
 
 ---
@@ -202,8 +204,8 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```bash
 # Clone
-git clone https://github.com/EverTerra/EverTerra-TPA.git
-cd EverTerra-TPA
+git clone https://github.com/FanStudio2077/EverTerra_Tpa.git
+cd EverTerra_Tpa
 
 # Build (requires JDK 21)
 ./gradlew build
