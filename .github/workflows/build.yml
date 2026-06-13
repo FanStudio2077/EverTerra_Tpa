@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+    branches: [ master, main, dev ]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - '.github/**'
+      - 'LICENSE'
+  pull_request:
+    branches: [ master, main ]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'LICENSE'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (Java 21)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-write-only: ${{ github.ref != 'refs/heads/master' && github.ref != 'refs/heads/main' }}
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EverTerra-TPA-${{ github.sha }}
+          path: build/libs/EverTerra-TPA-*.jar
+          retention-days: 7
