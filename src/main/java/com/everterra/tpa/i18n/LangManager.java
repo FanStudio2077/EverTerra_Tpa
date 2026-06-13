@@ -148,6 +148,30 @@ public class LangManager {
     }
 
     /**
+     * Gets a list of strings from a locale key.
+     */
+    public List<String> getRawList(Player player, String key) {
+        String locale = getPlayerLocale(player);
+        YamlConfiguration yaml = locales.get(locale);
+        List<String> list = null;
+
+        if (yaml != null) {
+            list = yaml.getStringList(key);
+        }
+
+        if ((list == null || list.isEmpty()) && !locale.equals(configManager.getFallbackLocale())) {
+            YamlConfiguration fallbackYaml = locales.get(configManager.getFallbackLocale());
+            if (fallbackYaml != null) {
+                list = fallbackYaml.getStringList(key);
+            }
+        }
+
+        if (list == null) return List.of("&cMissing: " + key);
+
+        return list.stream().map(TextUtil::colorize).toList();
+    }
+
+    /**
      * Gets the player's preferred locale.
      */
     public String getPlayerLocale(Player player) {

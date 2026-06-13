@@ -4,6 +4,7 @@ import com.everterra.tpa.EverTerraTPA;
 import com.everterra.tpa.core.CooldownManager;
 import com.everterra.tpa.core.RequestManager;
 import com.everterra.tpa.core.TpaType;
+import com.everterra.tpa.gui.TpaGuiManager;
 import com.everterra.tpa.i18n.LangManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -25,12 +26,14 @@ public class TpacCommand implements CommandExecutor, TabCompleter {
     private final EverTerraTPA plugin;
     private final RequestManager requestManager;
     private final CooldownManager cooldownManager;
+    private final TpaGuiManager guiManager;
     private final LangManager lang;
 
     public TpacCommand(EverTerraTPA plugin, RequestManager requestManager) {
         this.plugin = plugin;
         this.requestManager = requestManager;
         this.cooldownManager = plugin.getCooldownManager();
+        this.guiManager = plugin.getGuiManager();
         this.lang = plugin.getLangManager();
     }
 
@@ -78,6 +81,10 @@ public class TpacCommand implements CommandExecutor, TabCompleter {
                 Map.of("player", target.getName())));
         target.sendMessage(lang.format(target, "tpa.received_here",
                 Map.of("player", player.getName())));
+
+        // Show GUI to target
+        guiManager.showReceiveGui(target,
+                requestManager.getPendingRequest(target.getUniqueId()));
 
         return true;
     }

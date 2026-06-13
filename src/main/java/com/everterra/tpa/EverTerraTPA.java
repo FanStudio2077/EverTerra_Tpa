@@ -5,6 +5,8 @@ import com.everterra.tpa.config.ConfigManager;
 import com.everterra.tpa.core.CooldownManager;
 import com.everterra.tpa.core.RequestManager;
 import com.everterra.tpa.economy.EconomyManager;
+import com.everterra.tpa.gui.GeyserDetector;
+import com.everterra.tpa.gui.TpaGuiManager;
 import com.everterra.tpa.i18n.LangManager;
 import com.everterra.tpa.teleport.TeleportScheduler;
 import org.bukkit.Bukkit;
@@ -29,6 +31,7 @@ public final class EverTerraTPA extends JavaPlugin {
     private CooldownManager cooldownManager;
     private TeleportScheduler teleportScheduler;
     private EconomyManager economyManager;
+    private TpaGuiManager guiManager;
 
     // --- Subsystems ---
     // Registered in later phases:
@@ -61,6 +64,11 @@ public final class EverTerraTPA extends JavaPlugin {
         getLogger().info("Setting up economy...");
         this.economyManager = new EconomyManager(configManager, getLogger());
         economyManager.setup();
+
+        // 5. Initialize GUI
+        getLogger().info("Initializing GUI system...");
+        GeyserDetector.init();
+        this.guiManager = new TpaGuiManager(this);
 
         // 4. Register commands
         registerCommands();
@@ -147,5 +155,9 @@ public final class EverTerraTPA extends JavaPlugin {
 
     public EconomyManager getEconomyManager() {
         return economyManager;
+    }
+
+    public TpaGuiManager getGuiManager() {
+        return guiManager;
     }
 }
