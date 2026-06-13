@@ -2,8 +2,10 @@ package com.everterra.tpa;
 
 import com.everterra.tpa.command.*;
 import com.everterra.tpa.config.ConfigManager;
+import com.everterra.tpa.core.CooldownManager;
 import com.everterra.tpa.core.RequestManager;
 import com.everterra.tpa.i18n.LangManager;
+import com.everterra.tpa.teleport.TeleportScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,13 +25,13 @@ public final class EverTerraTPA extends JavaPlugin {
     private ConfigManager configManager;
     private LangManager langManager;
     private RequestManager requestManager;
+    private CooldownManager cooldownManager;
+    private TeleportScheduler teleportScheduler;
 
     // --- Subsystems ---
     // Registered in later phases:
-    // - CooldownManager
     // - EconomyManager
     // - TpaGuiManager
-    // - TeleportScheduler
 
     @Override
     public void onEnable() {
@@ -48,8 +50,10 @@ public final class EverTerraTPA extends JavaPlugin {
         langManager.load();
 
         // 3. Initialize core systems
-        getLogger().info("Initializing request manager...");
+        getLogger().info("Initializing core systems...");
         this.requestManager = new RequestManager(this);
+        this.cooldownManager = new CooldownManager(configManager);
+        this.teleportScheduler = new TeleportScheduler(this);
 
         // 4. Register commands
         registerCommands();
@@ -68,6 +72,9 @@ public final class EverTerraTPA extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (teleportScheduler != null) {
+            teleportScheduler.cancelAll();
+        }
         getLogger().info("EverTerra-TPA disabled. Goodbye!");
         instance = null;
     }
@@ -121,5 +128,13 @@ public final class EverTerraTPA extends JavaPlugin {
 
     public RequestManager getRequestManager() {
         return requestManager;
+    }
+
+    public CooldownManager getCooldownManager() {
+        return cooldownManager;
+    }
+
+    public TeleportScheduler getTeleportScheduler() {
+        return teleportScheduler;
     }
 }

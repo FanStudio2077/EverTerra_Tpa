@@ -1,6 +1,7 @@
 package com.everterra.tpa.command;
 
 import com.everterra.tpa.EverTerraTPA;
+import com.everterra.tpa.core.CooldownManager;
 import com.everterra.tpa.core.RequestManager;
 import com.everterra.tpa.core.TpaType;
 import com.everterra.tpa.i18n.LangManager;
@@ -23,11 +24,13 @@ public class TpacCommand implements CommandExecutor, TabCompleter {
 
     private final EverTerraTPA plugin;
     private final RequestManager requestManager;
+    private final CooldownManager cooldownManager;
     private final LangManager lang;
 
     public TpacCommand(EverTerraTPA plugin, RequestManager requestManager) {
         this.plugin = plugin;
         this.requestManager = requestManager;
+        this.cooldownManager = plugin.getCooldownManager();
         this.lang = plugin.getLangManager();
     }
 
@@ -54,11 +57,22 @@ public class TpacCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        // Check cooldown
+        long cooldownRemaining = cooldownManager.getRemaining(player, TpaType.TPAC);
+        if (cooldownRemaining > 0) {
+            player.sendMessage(lang.format(player, "error.cooldown",
+                    Map.of("time", cooldownRemaining)));
+            return true;
+        }
+
         String error = requestManager.createRequest(player, target, TpaType.TPAC);
         if (error != null) {
             player.sendMessage(lang.format(player, error));
             return true;
         }
+
+        // Set cooldown
+        cooldownManager.setCooldown(player, TpaType.TPAC);
 
         player.sendMessage(lang.format(player, "tpa.sent_here",
                 Map.of("player", target.getName())));

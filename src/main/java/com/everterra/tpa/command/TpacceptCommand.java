@@ -4,6 +4,7 @@ import com.everterra.tpa.EverTerraTPA;
 import com.everterra.tpa.core.RequestManager;
 import com.everterra.tpa.core.TpaRequest;
 import com.everterra.tpa.i18n.LangManager;
+import com.everterra.tpa.teleport.TeleportScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,11 +21,13 @@ public class TpacceptCommand implements CommandExecutor {
     private final EverTerraTPA plugin;
     private final RequestManager requestManager;
     private final LangManager lang;
+    private final TeleportScheduler teleportScheduler;
 
     public TpacceptCommand(EverTerraTPA plugin, RequestManager requestManager) {
         this.plugin = plugin;
         this.requestManager = requestManager;
         this.lang = plugin.getLangManager();
+        this.teleportScheduler = plugin.getTeleportScheduler();
     }
 
     @Override
@@ -55,25 +58,9 @@ public class TpacceptCommand implements CommandExecutor {
 
         player.sendMessage(lang.format(player, "tpa.accepted"));
 
-        // Queue teleport (Phase 4 will add delay scheduler)
-        // For now, instant teleport
-        executeTeleport(request);
+        // Schedule delayed teleport
+        teleportScheduler.scheduleTeleport(request);
 
         return true;
-    }
-
-    /**
-     * Executes the teleport immediately (Phase 4 will replace with delayed teleport).
-     */
-    private void executeTeleport(TpaRequest request) {
-        Player target = Bukkit.getPlayer(request.getTarget());
-        Player requester = Bukkit.getPlayer(request.getSender());
-
-        if (target == null || requester == null) return;
-
-        switch (request.getType()) {
-            case TPA -> requester.teleport(target.getLocation());
-            case TPAC -> target.teleport(requester.getLocation());
-        }
     }
 }
